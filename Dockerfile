@@ -5,6 +5,8 @@ RUN apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y  --no-install-recommends linux-libc-dev golang gcc
 
-RUN go get github.com/coreos/flannel.git
+#RUN make dist/flanneld-amd64
+RUN mkdir -p $GOPATH/src/github.com/coreos
+RUN   cd $GOPATH/src/github.com/coreos&& git clone https://github.com/coreos/flannel.git
 ENV CGO_ENABLED=1
 RUN cd $GOPATH/src/github.com/coreos/flannel && make dist/flanneld
