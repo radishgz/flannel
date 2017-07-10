@@ -7,6 +7,7 @@ ENV GOARCH=amd64
 #docker run -e CC=$(CC) -e GOARM=$(GOARM) -e GOARCH=$(ARCH) \
 #	-u $(shell id -u):$(shell id -g) \
 COPY .   /go/src/github.com/coreos/flannel
+RUN mkdir -p /go/src/github.com/coreos/flannel/dist
 
 #	    -v ${PWD}:/go/src/github.com/coreos/flannel:ro \
 #        -v ${PWD}/dist:/go/src/github.com/coreos/flannel/dist \
