@@ -1,15 +1,17 @@
-FROM ubuntu:16.04
-USER root
+FROM gcr.io/google_containers/kube-cross:v1.6.2-2
 
-RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y  --no-install-recommends linux-libc-dev golang gcc
- 
-RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y  --no-install-recommends git
-#RUN make dist/flanneld-amd64
-RUN mkdir -p $GOPATH/src/github.com/coreos
-#RUN   cd $GOPATH/src/github.com/coreos && git clone https://github.com/radishgz/flannel
-#ENV CGO_ENABLED=1
-#RUN cd $GOPATH/src/github.com/coreos/flannel && make dist/flanneld
+ENV CC=gcc
+ENV GOARM=6
+ENV GOARCH=amd64
+#ENV 
+#docker run -e CC=$(CC) -e GOARM=$(GOARM) -e GOARCH=$(ARCH) \
+#	-u $(shell id -u):$(shell id -g) \
+COPY .   /go/src/github.com/coreos/flannel
+
+#	    -v ${PWD}:/go/src/github.com/coreos/flannel:ro \
+#        -v ${PWD}/dist:/go/src/github.com/coreos/flannel/dist \
+#	    gcr.io/google_containers/kube-cross:$(KUBE_CROSS_TAG) /bin/bash -c '\
+RUN		cd /go/src/github.com/coreos/flannel && \
+		CGO_ENABLED=1 make -e dist/flanneld && \
+		mv dist/flanneld dist/flanneld-$ARCH && \
+		file dist/flanneld-$ARCH
