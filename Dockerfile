@@ -1,8 +1,6 @@
-FROM gcr.io/google_containers/kube-cross:v1.6.2-2
+FROM  gcr.io/google_containers/kube-cross:v1.8.3-1
 
-ENV CC=gcc
-ENV GOARM=6
-ENV GOARCH=amd64
+ 
 #ENV 
 #docker run -e CC=$(CC) -e GOARM=$(GOARM) -e GOARCH=$(ARCH) \
 #	-u $(shell id -u):$(shell id -g) \
